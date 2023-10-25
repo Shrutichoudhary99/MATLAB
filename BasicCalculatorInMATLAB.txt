@@ -1,0 +1,156 @@
+classdef app1 < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        UIFigure           matlab.ui.Figure
+        AnsEditField       matlab.ui.control.NumericEditField
+        AnsEditFieldLabel  matlab.ui.control.Label
+        Button_4           matlab.ui.control.Button
+        Button_2           matlab.ui.control.Button
+        Button_3           matlab.ui.control.Button
+        Button             matlab.ui.control.Button
+        YEditField         matlab.ui.control.NumericEditField
+        YEditFieldLabel    matlab.ui.control.Label
+        XEditField         matlab.ui.control.NumericEditField
+        XEditFieldLabel    matlab.ui.control.Label
+    end
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Button pushed function: Button
+        function ButtonPushed(app, event)
+            var1=app.XEditField.Value;
+            var2=app.YEditField.Value;
+            sum=var1+var2;
+            app.AnsEditField.Value=sum;
+        end
+
+        % Button pushed function: Button_2
+        function Button_2Pushed(app, event)
+            var1=app.XEditField.Value;
+            var2=app.YEditField.Value;
+            diff=var1-var2;
+            app.AnsEditField.Value=diff;
+        end
+
+        % Button pushed function: Button_3
+        function Button_3Pushed(app, event)
+            var1=app.XEditField.Value;
+            var2=app.YEditField.Value;
+            mult=var1*var2;
+            app.AnsEditField.Value=mult;
+        end
+
+        % Button pushed function: Button_4
+        function Button_4Pushed(app, event)
+            var1=app.XEditField.Value;
+            var2=app.YEditField.Value;
+            divide=var1/var2;
+            app.AnsEditField.Value=divide;
+        end
+
+        % Callback function: not associated with a component
+        function Button_5Pushed(app, event)
+            var1=app.XEditField.Value;
+            var2=app.YEditField.Value;
+            modulus=var1/var2;
+            app.AnsEditField.Value=modulus;
+        end
+    end
+
+    % Component initialization
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create UIFigure and hide until all components are created
+            app.UIFigure = uifigure('Visible', 'off');
+            app.UIFigure.Position = [100 100 640 480];
+            app.UIFigure.Name = 'MATLAB App';
+
+            % Create XEditFieldLabel
+            app.XEditFieldLabel = uilabel(app.UIFigure);
+            app.XEditFieldLabel.HorizontalAlignment = 'right';
+            app.XEditFieldLabel.Position = [103 391 25 22];
+            app.XEditFieldLabel.Text = 'X';
+
+            % Create XEditField
+            app.XEditField = uieditfield(app.UIFigure, 'numeric');
+            app.XEditField.Position = [143 391 100 22];
+
+            % Create YEditFieldLabel
+            app.YEditFieldLabel = uilabel(app.UIFigure);
+            app.YEditFieldLabel.HorizontalAlignment = 'right';
+            app.YEditFieldLabel.Position = [397 391 25 22];
+            app.YEditFieldLabel.Text = 'Y';
+
+            % Create YEditField
+            app.YEditField = uieditfield(app.UIFigure, 'numeric');
+            app.YEditField.Position = [437 391 100 22];
+
+            % Create Button
+            app.Button = uibutton(app.UIFigure, 'push');
+            app.Button.ButtonPushedFcn = createCallbackFcn(app, @ButtonPushed, true);
+            app.Button.Position = [190 317 100 23];
+            app.Button.Text = '+';
+
+            % Create Button_3
+            app.Button_3 = uibutton(app.UIFigure, 'push');
+            app.Button_3.ButtonPushedFcn = createCallbackFcn(app, @Button_3Pushed, true);
+            app.Button_3.Position = [190 262 100 23];
+            app.Button_3.Text = '*';
+
+            % Create Button_2
+            app.Button_2 = uibutton(app.UIFigure, 'push');
+            app.Button_2.ButtonPushedFcn = createCallbackFcn(app, @Button_2Pushed, true);
+            app.Button_2.Position = [360 316 100 23];
+            app.Button_2.Text = '-';
+
+            % Create Button_4
+            app.Button_4 = uibutton(app.UIFigure, 'push');
+            app.Button_4.ButtonPushedFcn = createCallbackFcn(app, @Button_4Pushed, true);
+            app.Button_4.Position = [360 261 100 23];
+            app.Button_4.Text = '/';
+
+            % Create AnsEditFieldLabel
+            app.AnsEditFieldLabel = uilabel(app.UIFigure);
+            app.AnsEditFieldLabel.HorizontalAlignment = 'right';
+            app.AnsEditFieldLabel.Position = [250 179 26 22];
+            app.AnsEditFieldLabel.Text = 'Ans';
+
+            % Create AnsEditField
+            app.AnsEditField = uieditfield(app.UIFigure, 'numeric');
+            app.AnsEditField.Position = [291 179 100 22];
+
+            % Show the figure after all components are created
+            app.UIFigure.Visible = 'on';
+        end
+    end
+
+    % App creation and deletion
+    methods (Access = public)
+
+        % Construct app
+        function app = app1
+
+            % Create UIFigure and components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.UIFigure)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.UIFigure)
+        end
+    end
+end
